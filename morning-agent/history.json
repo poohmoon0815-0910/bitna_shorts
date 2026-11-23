@@ -1,0 +1,136 @@
+[
+  {
+    "id": "run-1795217762050",
+    "date": "2026-11-20",
+    "executedAt": "2026-11-21T08:36:02+09:00",
+    "trigger": "오늘 출근 준비해 줘",
+    "status": "success",
+    "durationMs": 472776,
+    "account": "poohmoon0815@gmail.com",
+    "summary": {
+      "eventsCount": 0,
+      "importantMailsCount": 6,
+      "newsCount": 8,
+      "voiceMemosCount": 3,
+      "prioritiesCount": 3,
+      "driveDocsCount": 6
+    },
+    "note": "실시간 Google Workspace 동기화 완료"
+  },
+  {
+    "id": "run-1795129974922",
+    "date": "2026-11-20",
+    "executedAt": "2026-11-20T08:12:54+09:00",
+    "trigger": "오늘 출근 준비해 줘",
+    "status": "success",
+    "durationMs": 3987,
+    "account": "poohmoon0815@gmail.com",
+    "summary": {
+      "eventsCount": 0,
+      "importantMailsCount": 4,
+      "newsCount": 9,
+      "prioritiesCount": 3,
+      "driveDocsCount": 8
+    },
+    "note": "실시간 Google Workspace 동기화 완료"
+  },
+  {
+    "id": "run-1795120340440",
+    "date": "2026-11-20",
+    "executedAt": "2026-11-20T05:32:20+09:00",
+    "trigger": "오늘 출근 준비해 줘",
+    "status": "success",
+    "durationMs": 4104,
+    "account": "poohmoon0815@gmail.com",
+    "summary": {
+      "eventsCount": 0,
+      "importantMailsCount": 4,
+      "newsCount": 9,
+      "prioritiesCount": 3,
+      "driveDocsCount": 8
+    },
+    "note": "실시간 Google Workspace 동기화 완료"
+  },
+  {
+    "id": "run-1795118242359",
+    "date": "2026-11-20",
+    "executedAt": "2026-11-20T04:57:22+09:00",
+    "trigger": "오늘 출근 준비해 줘",
+    "status": "success",
+    "durationMs": 4144,
+    "account": "poohmoon0815@gmail.com",
+    "summary": {
+      "eventsCount": 0,
+      "importantMailsCount": 4,
+      "newsCount": 9,
+      "prioritiesCount": 3,
+      "driveDocsCount": 8
+    },
+    "note": "실시간 Google Workspace 동기화 완료"
+  },
+  {
+    "id": "run-1795113660596",
+    "date": "2026-11-20",
+    "executedAt": "2026-11-20T03:41:00+09:00",
+    "trigger": "오늘 출근 준비해 줘",
+    "status": "success",
+    "durationMs": 10967,
+    "account": "poohmoon0815@gmail.com",
+    "summary": {
+      "eventsCount": 0,
+      "importantMailsCount": 4,
+      "newsCount": 9,
+      "prioritiesCount": 3,
+      "driveDocsCount": 8
+    },
+    "note": "실시간 Google Workspace 동기화 완료"
+  },
+  {
+    "id": "run-1795110342547",
+    "date": "2026-11-20",
+    "executedAt": "2026-11-20T02:45:42+09:00",
+    "trigger": "오늘 출근 준비해 줘",
+    "status": "success",
+    "durationMs": 6053,
+    "account": "poohmoon0815@gmail.com",
+    "summary": {
+      "eventsCount": 0,
+      "importantMailsCount": 5,
+      "prioritiesCount": 3,
+      "driveDocsCount": 8
+    },
+    "note": "실시간 Google Workspace 동기화 완료"
+  },
+  {
+    "id": "run-1795110083577",
+    "date": "2026-11-20",
+    "executedAt": "2026-11-20T02:41:23+09:00",
+    "trigger": "오늘 출근 준비해 줘",
+    "status": "success",
+    "durationMs": 7173,
+    "account": "poohmoon0815@gmail.com",
+    "summary": {
+      "eventsCount": 0,
+      "importantMailsCount": 0,
+      "prioritiesCount": 1,
+      "driveDocsCount": 8
+    },
+    "note": "실시간 Google Workspace 동기화 완료"
+  },
+  {
+    "id": "run-20261120-022600",
+    "date": "2026-11-20",
+    "executedAt": "2026-11-20T02:26:00+09:00",
+    "trigger": "초기 실전 브리핑 테스트",
+    "status": "success",
+    "durationMs": 4200,
+    "account": "poohmoon0815@gmail.com",
+    "summary": {
+      "eventsCount": 0,
+      "importantMailsCount": 4,
+      "prioritiesCount": 3,
+      "driveDocsCount": 4
+    },
+    "note": "Google Calendar · Gmail · Google Drive 실시간 연동 확인 완료"
+  }
+]

@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>유튜브 대본 추출 & 심층 분석 대시보드</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Malgun Gothic', sans-serif;
+      background: #0b1120;
+      color: #f1f5f9;
+      min-height: 100vh;
+      padding: 24px;
+    }
+    .container { max-width: 1380px; margin: 0 auto; }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #1e293b;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 21px;
+      font-weight: 700;
+      color: #38bdf8;
+    }
+    .logo-badge {
+      background: linear-gradient(135deg, #f97316, #ef4444);
+      color: white;
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-weight: 600;
+    }
+    .search-panel {
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 14px;
+      border: 1px solid #334155;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+      margin-bottom: 20px;
+    }
+    .search-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .search-input {
+      flex: 1;
+      background: #0f172a;
+      border: 1px solid #334155;
+      padding: 14px 18px;
+      border-radius: 10px;
+      color: #f8fafc;
+      font-size: 15px;
+      outline: none;
+    }
+    .search-input:focus { border-color: #38bdf8; }
+    .sub-input {
+      width: 100%;
+      background: #0f172a;
+      border: 1px solid #334155;
+      padding: 10px 14px;
+      border-radius: 8px;
+      color: #cbd5e1;
+      font-size: 13px;
+      outline: none;
+    }
+    .btn {
+      background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
+      color: white;
+      border: none;
+      padding: 14px 26px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: opacity 0.2s;
+    }
+    .btn:hover { opacity: 0.92; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .history-bar {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 20px;
+    }
+    .history-chip {
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: #cbd5e1;
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 12px;
+      cursor: pointer;
+      white-space: nowrap;
+      max-width: 260px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .history-chip:hover { border-color: #38bdf8; color: #fff; }
+
+    .loading-state {
+      display: none;
+      text-align: center;
+      padding: 44px;
+      background: #1e293b;
+      border-radius: 14px;
+      border: 1px solid #334155;
+      margin-bottom: 24px;
+    }
+    .spinner {
+      width: 42px;
+      height: 42px;
+      border: 4px solid #334155;
+      border-top-color: #38bdf8;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 16px auto;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 1.15fr;
+      gap: 22px;
+    }
+    @media (max-width: 960px) { .main-grid { grid-template-columns: 1fr; } }
+
+    .card {
+      background: #1e293b;
+      border-radius: 14px;
+      padding: 22px;
+      border: 1px solid #334155;
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #334155;
+    }
+    .card-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: #38bdf8;
+    }
+    .btn-group { display: flex; gap: 8px; }
+    .btn-sm {
+      background: #334155;
+      color: #e2e8f0;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .btn-sm:hover { background: #475569; color: white; }
+    .btn-sm.active { background: #0284c7; color: white; }
+
+    .video-info-box {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 16px;
+      background: #0f172a;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #1e293b;
+    }
+    .video-thumb {
+      width: 128px;
+      height: 72px;
+      border-radius: 8px;
+      object-fit: cover;
+      background: #1e293b;
+    }
+    .video-details h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #f8fafc;
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+    .video-details p { font-size: 12px; color: #94a3b8; }
+    .tag-badge {
+      display: inline-block;
+      background: #0369a1;
+      color: #e0f2fe;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .transcript-box {
+      background: #0f172a;
+      padding: 16px;
+      border-radius: 10px;
+      max-height: 520px;
+      overflow-y: auto;
+      font-size: 14px;
+      line-height: 1.75;
+      color: #e2e8f0;
+      white-space: pre-wrap;
+      word-break: keep-all;
+      border: 1px solid #1e293b;
+    }
+    .seg-row {
+      display: flex;
+      gap: 10px;
+      padding: 6px 0;
+      border-bottom: 1px dashed #1e293b;
+    }
+    .seg-time {
+      color: #38bdf8;
+      font-weight: 600;
+      font-size: 12px;
+      min-width: 48px;
+      padding-top: 2px;
+    }
+
+    .box-panel {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .box-panel.hook { background: rgba(180, 83, 9, 0.15); border-color: #d97706; }
+    .box-panel.remake { background: rgba(5, 150, 105, 0.15); border-color: #10b981; }
+    .panel-title {
+      font-weight: 700;
+      font-size: 15px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .list-clean { padding-left: 18px; font-size: 13.5px; line-height: 1.65; color: #e2e8f0; }
+    .list-clean li { margin-bottom: 5px; }
+    .script-card {
+      background: #0b1120;
+      border: 1px solid #10b981;
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 10px;
+      font-size: 13.5px;
+      line-height: 1.7;
+      color: #ecfdf5;
+      white-space: pre-wrap;
+    }
+    .qa-box {
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid #334155;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">
+        <span>🎬 유튜브 음성/자막 텍스트 추출 &amp; 심층 분석기</span>
+        <span class="logo-badge">c:\shorts-v2\유튜브_분석</span>
+      </div>
+      <div style="font-size: 13px; color: #94a3b8;">포트 8001 (기존 5173 대시보드와 동시 실행 가능)</div>
+    </header>
+
+    <div class="search-panel">
+      <div class="search-row">
+        <input type="text" id="urlInput" class="search-input" placeholder="유튜브 영상 또는 쇼츠 주소(URL)를 붙여넣으세요 (예: https://www.youtube.com/watch?v=... 또는 https://youtube.com/shorts/...)" />
+        <button id="submitBtn" class="btn" onclick="startAnalysis()">🚀 텍스트 추출 및 AI 분석</button>
+      </div>
+      <input type="text" id="customInput" class="sub-input" placeholder="(선택) 특별히 분석하고 싶은 포인트를 적어주세요 — 예: '이 영상의 숫자 비유 방식만 뽑아줘', '중학생도 이해하게 요약해줘'" />
+      <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px;">
+        <button type="button" class="history-chip" onclick="setCustomPreset('호기심빛나 핵심 주제(과학·인체·우주·시간 스케일) 적합도와 숫자 기반 3초 후킹 포인트를 중점 분석해줘.')">🔬 호기심빛나 적합도 중심</button>
+        <button type="button" class="history-chip" onclick="setCustomPreset('Google Flow 나노바나나 클레이 3D 캐릭터로 시각화하기 좋은 핵심 장면 3개와 소품 연출을 구체적으로 뽑아줘.')">🎨 클레이 3D 씬 연출 강화</button>
+        <button type="button" class="history-chip" onclick="setCustomPreset('이 주제를 2~3분 미니 다큐 또는 연속 쇼츠 시리즈(1편/2편)로 확장할 수 있는 구조로 분석해줘.')">🔁 2~3분 시리즈 확장성</button>
+        <button type="button" class="history-chip" onclick="setCustomPreset('원본의 어려운 전문 용어를 중학생도 한 번에 이해할 수 있는 일상 체감 비유(올림픽 수영장, 63빌딩 등)로 바꿔줘.')">💡 숫자·체감 비유 변환</button>
+      </div>
+    </div>
+
+    <div id="historyBar" class="history-bar"></div>
+
+    <div id="loading" class="loading-state">
+      <div class="spinner"></div>
+      <h3 style="margin-bottom: 8px;">영상에서 말하는 내용을 텍스트로 뽑아내고 분석하는 중입니다...</h3>
+      <p style="font-size: 13px; color: #94a3b8;">1단계: 자막/음성 추출 (자막 없으면 Whisper AI 음성인식 자동 전환) &rarr; 2단계: 대본 핵심 요약·후킹·쇼츠 리메이크 대본 생성</p>
+    </div>
+
+    <div id="contentGrid" class="main-grid" style="display: none;">
+      <!-- 좌측: 추출된 대본 텍스트 -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">📝 추출된 영상 텍스트 (대본)</div>
+          <div class="btn-group">
+            <button id="tabFullBtn" class="btn-sm active" onclick="switchTranscriptView('full')">전체 글 보기</button>
+            <button id="tabTimeBtn" class="btn-sm" onclick="switchTranscriptView('timeline')">시간대별 보기</button>
+            <button class="btn-sm" onclick="copyTranscript()">📋 텍스트 복사</button>
+            <button class="btn-sm" onclick="downloadTranscript()">💾 TXT 저장</button>
+          </div>
+        </div>
+
+        <div class="video-info-box">
+          <img id="vThumb" class="video-thumb" src="" alt="썸네일">
+          <div class="video-details">
+            <h3 id="vTitle">영상 제목</h3>
+            <p>
+              <span id="vChannel">채널명</span> · 길이 <span id="vDuration">00:00</span> ·
+              <span id="vSource" class="tag-badge">추출 방식</span>
+            </p>
+          </div>
+        </div>
+
+        <div id="transcriptFullView" class="transcript-box"></div>
+        <div id="transcriptTimelineView" class="transcript-box" style="display: none;"></div>
+
+        <!-- 대본 기반 자유 질문창 -->
+        <div class="qa-box">
+          <div style="font-size: 13px; font-weight: 600; color: #38bdf8; margin-bottom: 8px;">💬 추출된 텍스트에 대해 AI에게 추가 질문/요청하기</div>
+          <div style="display: flex; gap: 8px;">
+            <input type="text" id="qaInput" class="sub-input" placeholder="예: 이 대본에서 가장 흥미로운 팩트 3개만 뽑아줘 / 다른 각도로 쇼츠 대본 써줘" />
+            <button id="qaBtn" class="btn-sm" style="background: #0284c7; color: white; padding: 0 16px; white-space: nowrap;" onclick="askQuestion()">질문</button>
+          </div>
+          <div id="qaAnswer" class="script-card" style="display: none; border-color: #38bdf8; color: #e2e8f0; margin-top: 10px;"></div>
+        </div>
+      </div>
+
+      <!-- 우측: AI 심층 분석 및 쇼츠 리메이크 -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">📊 텍스트 심층 분석 &amp; 쇼츠 제작 가이드</div>
+          <span id="analyzedAt" style="font-size: 12px; color: #94a3b8;"></span>
+        </div>
+
+        <!-- 0. 호기심빛나 채널 적합도 평가 -->
+        <div id="channelFitPanel" class="box-panel" style="display: none; border-color: #38bdf8; background: #0f172a;">
+          <div class="panel-title" style="color: #38bdf8;">
+            <span>🧭 0. '호기심빛나' 채널 방향성 적합도</span>
+            <span id="fitBadge" style="font-size: 12px; padding: 3px 10px; border-radius: 999px; font-weight: 700;"></span>
+          </div>
+          <p style="font-size: 13px; color: #cbd5e1; margin-bottom: 6px;">
+            <strong>분류:</strong> <span id="fitCategory" style="color: #7dd3fc;"></span>
+          </p>
+          <p id="fitReason" style="font-size: 13.5px; line-height: 1.6; color: #f1f5f9; margin-bottom: 8px;"></p>
+          <p id="fitTip" style="font-size: 12.5px; color: #fde68a; background: rgba(251, 191, 36, 0.08); padding: 8px 10px; border-radius: 6px;"></p>
+        </div>
+
+        <!-- 1. 핵심 내용 요약 -->
+        <div class="box-panel">
+          <div class="panel-title" style="color: #38bdf8;">📌 1. 영상 핵심 내용 요약 &amp; 주요 팩트</div>
+          <p id="summaryText" style="font-size: 13.5px; line-height: 1.65; color: #f1f5f9; margin-bottom: 10px;"></p>
+          <ul id="coreClaimsList" class="list-clean"></ul>
+          <p id="toneText" style="font-size: 12.5px; color: #94a3b8; margin-top: 10px; padding-top: 8px; border-top: 1px dashed #334155;"></p>
+        </div>
+
+        <!-- 2. 초반 3초 후킹 분석 -->
+        <div class="box-panel hook">
+          <div class="panel-title" style="color: #fbbf24;">
+            <span>🎯 2. 초반 3초 후킹(Hooking) 해부</span>
+            <span id="hookScore" style="font-size: 13px; background: #b45309; color: #fff; padding: 2px 10px; border-radius: 999px;"></span>
+          </div>
+          <p style="font-size: 13.5px; margin-bottom: 6px;"><strong>실제 첫 문장:</strong> <span id="openingLine" style="color: #fef08a;"></span></p>
+          <p id="whyItWorked" style="font-size: 13px; color: #fde68a; line-height: 1.6;"></p>
+        </div>
+
+        <!-- 3. 호기심빛나 맞춤 쇼츠 리메이크 대본 -->
+        <div class="box-panel remake">
+          <div class="panel-title" style="color: #34d399;">
+            <span>✨ 3. 호기심빛나 채널용 쇼츠 리메이크 대본</span>
+            <button class="btn-sm" onclick="copyRemakeScript()">📋 리메이크 대본 복사</button>
+          </div>
+          <div style="font-size: 13px; margin-bottom: 8px;">
+            <strong>추천 제목 3선:</strong>
+            <ul id="remakeTitles" class="list-clean" style="color: #a7f3d0; margin-top: 4px;"></ul>
+          </div>
+          <p style="font-size: 13px; margin-bottom: 6px;"><strong>추천 3초 후킹 멘트:</strong> <span id="remakeHook" style="color: #fef08a; font-weight: 600;"></span></p>
+          <div id="remakeScript" class="script-card"></div>
+          <p id="remakeVisual" style="font-size: 12.5px; color: #a7f3d0; margin-top: 10px; line-height: 1.5;"></p>
+        </div>
+
+        <!-- 4. 대본 전개 구조 & 시청 지속 장치 -->
+        <div class="box-panel" style="margin-bottom: 0;">
+          <div class="panel-title" style="color: #38bdf8;">⏱️ 4. 대본 구조 &amp; 시청 지속(Retention) 장치</div>
+          <div id="structureList" style="margin-bottom: 12px;"></div>
+          <div style="font-size: 12px; color: #94a3b8; font-weight: 600; margin-bottom: 4px;">끝까지 보게 만든 비결:</div>
+          <ul id="retentionList" class="list-clean"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentData = null;
+
+    function setCustomPreset(text) {
+      const input = document.getElementById("customInput");
+      input.value = text;
+      input.focus();
+    }
+
+    async function loadHistory() {
+      try {
+        const resp = await fetch("/api/history");
+        if (!resp.ok) return;
+        const items = await resp.json();
+        const bar = document.getElementById("historyBar");
+        bar.innerHTML = "";
+        items.forEach(item => {
+          const chip = document.createElement("button");
+          chip.className = "history-chip";
+          chip.title = `${item.title} (${item.channel})`;
+          chip.innerText = `📂 ${item.title}`;
+          chip.onclick = () => loadSavedResult(item.video_id);
+          bar.appendChild(chip);
+        });
+      } catch (e) {}
+    }
+
+    async function loadSavedResult(videoId) {
+      try {
+        const resp = await fetch(`/api/result/${videoId}`);
+        if (!resp.ok) return;
+        const data = await resp.json();
+        renderResult(data);
+      } catch (e) {}
+    }
+
+    async function startAnalysis() {
+      const url = document.getElementById("urlInput").value.trim();
+      const custom_instruction = document.getElementById("customInput").value.trim();
+      if (!url) {
+        alert("유튜브 영상 또는 쇼츠 주소를 입력해 주세요!");
+        return;
+      }
+
+      document.getElementById("submitBtn").disabled = true;
+      document.getElementById("loading").style.display = "block";
+      document.getElementById("contentGrid").style.display = "none";
+      document.getElementById("qaAnswer").style.display = "none";
+
+      try {
+        const resp = await fetch("/api/extract-and-analyze", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url, custom_instruction })
+        });
+        const data = await resp.json();
+        if (!resp.ok) {
+          throw new Error(data.detail || "분석 중 오류가 발생했습니다.");
+        }
+        renderResult(data);
+        loadHistory();
+      } catch (err) {
+        alert("오류: " + err.message);
+      } finally {
+        document.getElementById("submitBtn").disabled = false;
+        document.getElementById("loading").style.display = "none";
+      }
+    }
+
+    function renderResult(data) {
+      currentData = data;
+      document.getElementById("vTitle").innerText = data.meta.title || "";
+      document.getElementById("vChannel").innerText = data.meta.channel || "";
+      document.getElementById("vDuration").innerText = data.meta.duration_str || "00:00";
+      document.getElementById("vThumb").src = data.meta.thumbnail || "";
+      document.getElementById("vSource").innerText = data.source_type || "";
+      document.getElementById("analyzedAt").innerText = data.analyzed_at || "";
+
+      // 전체 텍스트
+      document.getElementById("transcriptFullView").innerText = data.transcript || "";
+
+      // 타임라인 뷰
+      const tlBox = document.getElementById("transcriptTimelineView");
+      tlBox.innerHTML = "";
+      (data.segments || []).forEach(seg => {
+        const row = document.createElement("div");
+        row.className = "seg-row";
+        row.innerHTML = `<span class="seg-time">[${seg.time_str}]</span><span>${seg.text}</span>`;
+        tlBox.appendChild(row);
+      });
+
+      const a = data.analysis || {};
+      const cf = a.channel_fit || null;
+      const cfPanel = document.getElementById("channelFitPanel");
+      if (cf && (cf.fit_verdict || cf.reason)) {
+        cfPanel.style.display = "block";
+        const verdict = cf.fit_verdict || "적합";
+        const score = cf.fit_score != null ? `${cf.fit_score}점` : "";
+        const badge = document.getElementById("fitBadge");
+        badge.innerText = `${verdict} ${score}`.trim();
+        if (verdict === "적합") {
+          badge.style.background = "#059669";
+          badge.style.color = "#ffffff";
+        } else if (verdict === "부적합") {
+          badge.style.background = "#dc2626";
+          badge.style.color = "#ffffff";
+        } else {
+          badge.style.background = "#d97706";
+          badge.style.color = "#ffffff";
+        }
+        document.getElementById("fitCategory").innerText = cf.category || "미분류";
+        document.getElementById("fitReason").innerText = cf.reason || "";
+        document.getElementById("fitTip").innerText = cf.pivot_or_usage_tip ? `💡 활용/변환 팁: ${cf.pivot_or_usage_tip}` : "";
+      } else {
+        cfPanel.style.display = "none";
+      }
+
+      document.getElementById("summaryText").innerText = a.summary || "";
+      document.getElementById("toneText").innerText = a.tone_and_style ? `🎙️ 화법/스타일 특징: ${a.tone_and_style}` : "";
+
+      const claimsEl = document.getElementById("coreClaimsList");
+      claimsEl.innerHTML = "";
+      (a.core_claims || []).forEach(c => {
+        const li = document.createElement("li");
+        li.innerText = c;
+        claimsEl.appendChild(li);
+      });
+
+      const hk = a.hooking_analysis || {};
+      document.getElementById("hookScore").innerText = `후킹 점수 ${hk.hook_score || 90}점`;
+      document.getElementById("openingLine").innerText = `"${hk.opening_line || ''}"`;
+      document.getElementById("whyItWorked").innerText = hk.why_it_worked || "";
+
+      const rm = a.shorts_remake_guide || {};
+      const titlesEl = document.getElementById("remakeTitles");
+      titlesEl.innerHTML = "";
+      const titleArr = rm.recommended_titles || (rm.recommended_title ? [rm.recommended_title] : []);
+      titleArr.forEach(t => {
+        const li = document.createElement("li");
+        li.innerText = t;
+        titlesEl.appendChild(li);
+      });
+      document.getElementById("remakeHook").innerText = `"${rm.hooking_script || ''}"`;
+      document.getElementById("remakeScript").innerText = rm.ready_to_use_script || rm.key_message || "";
+      document.getElementById("remakeVisual").innerText = rm.visual_scene_idea ? `🎬 나노바나나 클레이 씬 연출: ${rm.visual_scene_idea}` : "";
+
+      const stEl = document.getElementById("structureList");
+      stEl.innerHTML = "";
+      (a.structure || []).forEach(s => {
+        const d = document.createElement("div");
+        d.style.cssText = "background:#0b1120;border-left:3px solid #38bdf8;padding:8px 12px;border-radius:6px;margin-bottom:6px;font-size:13px;";
+        d.innerHTML = `<strong style="color:#38bdf8;">${s.phase}</strong>: ${s.description}`;
+        stEl.appendChild(d);
+      });
+
+      const retEl = document.getElementById("retentionList");
+      retEl.innerHTML = "";
+      (a.retention_secrets || []).forEach(r => {
+        const li = document.createElement("li");
+        li.innerText = r;
+        retEl.appendChild(li);
+      });
+
+      document.getElementById("contentGrid").style.display = "grid";
+    }
+
+    function switchTranscriptView(mode) {
+      const fullEl = document.getElementById("transcriptFullView");
+      const timeEl = document.getElementById("transcriptTimelineView");
+      const fullBtn = document.getElementById("tabFullBtn");
+      const timeBtn = document.getElementById("tabTimeBtn");
+      if (mode === "timeline") {
+        fullEl.style.display = "none";
+        timeEl.style.display = "block";
+        fullBtn.classList.remove("active");
+        timeBtn.classList.add("active");
+      } else {
+        fullEl.style.display = "block";
+        timeEl.style.display = "none";
+        fullBtn.classList.add("active");
+        timeBtn.classList.remove("active");
+      }
+    }
+
+    function copyTranscript() {
+      if (!currentData) return;
+      navigator.clipboard.writeText(currentData.transcript || "").then(() => {
+        alert("추출된 전체 대본이 클립보드에 복사되었습니다!");
+      });
+    }
+
+    function copyRemakeScript() {
+      if (!currentData || !currentData.analysis) return;
+      const rm = currentData.analysis.shorts_remake_guide || {};
+      const txt = rm.ready_to_use_script || "";
+      if (!txt) return;
+      navigator.clipboard.writeText(txt).then(() => {
+        alert("호기심빛나 리메이크 쇼츠 대본이 복사되었습니다!");
+      });
+    }
+
+    function downloadTranscript() {
+      if (!currentData) return;
+      const tl = (currentData.segments || []).map(s => `[${s.time_str}] ${s.text}`).join("\n");
+      const content = `제목: ${currentData.meta.title}\n채널: ${currentData.meta.channel}\n\n[전체 대본]\n${currentData.transcript}\n\n[시간대별 대사]\n${tl}`;
+      const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `${currentData.meta.video_id}_대본.txt`;
+      a.click();
+    }
+
+    async function askQuestion() {
+      if (!currentData) return;
+      const q = document.getElementById("qaInput").value.trim();
+      if (!q) return;
+      const btn = document.getElementById("qaBtn");
+      const ansEl = document.getElementById("qaAnswer");
+      btn.disabled = true;
+      ansEl.style.display = "block";
+      ansEl.innerText = "AI가 대본을 바탕으로 답변을 작성 중입니다...";
+      try {
+        const resp = await fetch("/api/ask-transcript", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ video_id: currentData.meta.video_id, question: q })
+        });
+        const d = await resp.json();
+        ansEl.innerText = d.answer || d.detail || "답변을 가져오지 못했습니다.";
+      } catch (e) {
+        ansEl.innerText = "오류: " + e.message;
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    document.getElementById("urlInput").addEventListener("keydown", e => {
+      if (e.key === "Enter") startAnalysis();
+    });
+    document.getElementById("qaInput").addEventListener("keydown", e => {
+      if (e.key === "Enter") askQuestion();
+    });
+
+    loadHistory();
+  </script>
+</body>
+</html>

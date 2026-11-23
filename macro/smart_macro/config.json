@@ -1,0 +1,9 @@
+{
+  "confidence": 0.82,
+  "delay_after_click": 1.5,
+  "wait_timeout_seconds": 10,
+  "search_taskbar_only": true,
+  "taskbar_height_px": 120,
+  "click_type": "left",
+  "move_duration": 0.3
+}

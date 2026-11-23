@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="neon">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>호기심빛나 AI 회사 · CEO 종합상황실 (Flight Deck)</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+
+<body>
+  <div class="app-shell">
+    <!-- Top Glass Header -->
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">👑</div>
+          <div>
+            <div class="brand-title">호기심빛나 CEO 종합상황실</div>
+            <div class="brand-sub">9인 정예 AI 회사 · 총괄 실장 직할 조종석</div>
+          </div>
+        </div>
+
+        <nav class="nav-pills" role="tablist" aria-label="대시보드 메뉴">
+          <button class="nav-pill active" data-tab="cockpit" role="tab" aria-selected="true">🕹️ 종합상황실</button>
+          <button class="nav-pill" data-tab="briefing" role="tab" aria-selected="false">☀️ 모닝 브리핑</button>
+          <button class="nav-pill" data-tab="org" role="tab" aria-selected="false">🏢 조직도 · 사규</button>
+          <button class="nav-pill" data-tab="archive" role="tab" aria-selected="false">🗂️ 보관함</button>
+          <button class="nav-pill" data-tab="settings" role="tab" aria-selected="false">⚙️ 설정 · 이력</button>
+        </nav>
+
+        <div class="topbar-right">
+          <div class="theme-switcher" role="group" aria-label="대시보드 테마 선택">
+            <button class="theme-btn active" data-theme-pick="neon" title="다크 네온 조종석">⚡ 네온</button>
+            <button class="theme-btn" data-theme-pick="pop" title="팝 아트 · 네오브루탈리즘">🎨 팝</button>
+            <button class="theme-btn" data-theme-pick="lounge" title="미드나잇 라운지">🌙 라운지</button>
+          </div>
+          <div class="account-pill" id="accountPill" title="연결된 기본 Google 계정">
+            <span class="status-dot"></span>
+            <span id="accountEmail">poohmoon0815@gmail.com</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <!-- TAB 0: CEO FLIGHT DECK (COCKPIT) -->
+      <section id="tab-cockpit" class="tab-panel active">
+        <!-- Hero Cockpit Banner -->
+        <section class="cockpit-hero">
+          <div class="cockpit-hero-bg" style="background-image: url('/assets/cockpit_hero.jpg')"></div>
+          <div class="cockpit-hero-overlay"></div>
+          <div class="cockpit-hero-content">
+            <div class="chief-block">
+              <div class="chief-avatar-wrap">
+                <img src="/assets/chief_avatar.jpg" alt="총괄 실장" class="chief-avatar" />
+                <span class="chief-pulse" title="24시간 실시간 감시 중"></span>
+              </div>
+              <div class="chief-info">
+                <div class="chief-badges">
+                  <span class="badge-glow">⚡ 총괄 실장 실시간 통솔 중</span>
+                  <span class="badge-clock" id="cockpitClock">KST 동기화 중...</span>
+                </div>
+                <h1 class="cockpit-title">대표님, 4개 부서 전 라인이 조종석에 연결되었습니다</h1>
+                <p class="cockpit-sub" id="chiefStatusSub">
+                  1부서 비서실 · 2부서 쇼츠팀 · 3부서 마케팅·블로그실 · 4부서 종합스튜디오 실시간 감시 및 원클릭 승인 대기 중
+                </p>
+                <div class="cockpit-hero-actions">
+                  <button id="refreshCockpitBtn" class="btn-primary">🔄 상황실 새로고침</button>
+                  <button id="quickRunBriefingBtn" class="btn-ghost">☀️ 오늘 출근 브리핑 실행</button>
+                  <button class="btn-ghost" data-jump-tab="org">🏢 최신 9인 조직도 보기</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="chief-log-panel">
+              <div class="chief-log-head">⚡ 총괄 실장 최근 잡도리 · 슈퍼캐리 보고</div>
+              <div id="chiefRecentLogs" class="chief-log-list">
+                <div class="empty-inline">상황 데이터를 불러오는 중입니다...</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Widget 1: Morning Briefing & Marketing Trend Summary -->
+        <section class="cockpit-section">
+          <div class="section-header-row">
+            <h2>☀️ 모닝 브리핑 &amp; 🔥 3부서 떡상·트렌드 요약</h2>
+            <button class="btn-ghost" data-jump-tab="briefing">전체 브리핑 열기 →</button>
+          </div>
+          <div id="cockpitSummaryCards" class="summary-cards-grid">
+            <div class="card">
+              <div class="empty-inline">요약 카드 로딩 중...</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Widget 2 & 3: Live Pipeline Traffic Lights + One-Click CEO QA Inbox -->
+        <section class="cockpit-main-grid">
+          <!-- Left: Real-time Pipeline Traffic Lights -->
+          <div class="cockpit-col-left">
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h2>🚦 실시간 파이프라인 신호등 현황판</h2>
+                  <p class="card-sub">9인 정예 4개 부서의 현재 가동 상태와 진행률입니다</p>
+                </div>
+                <span class="pill-tag" id="pipelineSyncTag">실시간</span>
+              </div>
+              <div id="pipelineList" class="pipeline-list">
+                <div class="empty-inline">파이프라인 상태 확인 중...</div>
+              </div>
+            </div>
+
+            <!-- Widget 4: Model & Credit Saver Monitor -->
+            <div class="card" style="margin-top: 20px;">
+              <div class="card-header">
+                <div>
+                  <h2>💰 모델 · 크레딧 절약 모니터</h2>
+                  <p class="card-sub">유료 크레딧 잔액과 부서별 가성비 모델 배정 현황입니다</p>
+                </div>
+              </div>
+              <div id="costMonitorBox" class="cost-monitor-box">
+                <div class="empty-inline">크레딧 계기판 연결 중...</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: One-Click QA Approval Inbox -->
+          <div class="cockpit-col-right">
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h2>📬 원클릭 검수(QA) 승인함</h2>
+                  <p class="card-sub">자체 검수를 통과한 결과물을 확인하고 [승인 / 수정 지시 / 반려] 버튼만 누르세요</p>
+                </div>
+                <span class="badge-suggest" id="qaPendingBadge">대기 확인 중</span>
+              </div>
+              <div id="qaInboxList" class="qa-inbox-list">
+                <div class="empty-inline">검수 대기 항목을 불러오는 중입니다...</div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- TAB 1: BRIEFING (Existing Morning Agent Preserved 100%) -->
+      <section id="tab-briefing" class="tab-panel">
+        <!-- Hero Command Deck -->
+        <section class="hero-card">
+          <div class="hero-top">
+            <div>
+              <div class="hero-eyebrow" id="todayLabel">2026년 11월 22일 일요일</div>
+              <h1 class="hero-title">오늘 업무를 한눈에 준비해 드릴게요</h1>
+              <p class="hero-desc">
+                Google Calendar · Gmail · Google Drive · 최신 뉴스를 실시간으로 모아 사실과 우선순위를 깔끔하게 정리합니다.
+              </p>
+            </div>
+            <div class="tool-badges">
+              <span class="tool-badge"><span class="dot green"></span>Calendar</span>
+              <span class="tool-badge"><span class="dot green"></span>Gmail</span>
+              <span class="tool-badge"><span class="dot green"></span>Drive</span>
+              <span class="tool-badge"><span class="dot green"></span>News</span>
+            </div>
+          </div>
+
+          <div class="command-bar">
+            <div class="date-input-wrap">
+              <label for="targetDate" class="sr-only">브리핑 날짜</label>
+              <input type="date" id="targetDate" value="2026-11-22" />
+            </div>
+            <div class="prompt-input-wrap">
+              <label for="promptInput" class="sr-only">명령어 입력</label>
+              <input type="text" id="promptInput" value="오늘 출근 준비해 줘" placeholder="예: 오늘 출근 준비해 줘" />
+            </div>
+            <button id="runBtn" class="btn-primary">
+              <span class="btn-icon">✨</span>
+              <span class="btn-label">출근 준비 시작</span>
+            </button>
+          </div>
+
+          <!-- Running Progress Indicator -->
+          <div id="runProgress" class="run-progress hidden" aria-live="polite">
+            <div class="spinner"></div>
+            <div class="progress-steps">
+              <span class="step active" id="stepCal">1. 캘린더 확인</span>
+              <span class="step-sep">→</span>
+              <span class="step" id="stepMail">2. Gmail 분석</span>
+              <span class="step-sep">→</span>
+              <span class="step" id="stepDrive">3. Drive 링크</span>
+              <span class="step-sep">→</span>
+              <span class="step" id="stepNews">4. 최신 뉴스 수집</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- KPI Summary Row -->
+        <div class="kpi-grid">
+          <button class="kpi-card" data-scroll="#sec-calendar">
+            <div class="kpi-head">
+              <span class="kpi-label">오늘 일정</span>
+              <span class="kpi-icon blue">📅</span>
+            </div>
+            <div class="kpi-value" id="kpiEvents">0</div>
+            <div class="kpi-sub">Google Calendar</div>
+          </button>
+
+          <button class="kpi-card" data-scroll="#sec-mails">
+            <div class="kpi-head">
+              <span class="kpi-label">중요 메일</span>
+              <span class="kpi-icon red">✉️</span>
+            </div>
+            <div class="kpi-value" id="kpiMails">0</div>
+            <div class="kpi-sub">Gmail 최근 수신</div>
+          </button>
+
+          <button class="kpi-card" data-scroll="#sec-news">
+            <div class="kpi-head">
+              <span class="kpi-label">맞춤 뉴스</span>
+              <span class="kpi-icon amber">📰</span>
+            </div>
+            <div class="kpi-value" id="kpiNews">0</div>
+            <div class="kpi-sub">뉴스·트렌드 수집</div>
+          </button>
+
+          <button class="kpi-card" data-scroll="#sec-priorities">
+            <div class="kpi-head">
+              <span class="kpi-label">오늘 우선순위</span>
+              <span class="kpi-icon purple">🎯</span>
+            </div>
+            <div class="kpi-value" id="kpiPriorities">0</div>
+            <div class="kpi-sub" id="kpiPrioritiesSub">체크 가능</div>
+          </button>
+
+          <button class="kpi-card" data-scroll="#sec-drive">
+            <div class="kpi-head">
+              <span class="kpi-label">관련 자료</span>
+              <span class="kpi-icon teal">📁</span>
+            </div>
+            <div class="kpi-value" id="kpiDrive">0</div>
+            <div class="kpi-sub">Drive 원문 링크</div>
+          </button>
+        </div>
+
+        <!-- Headline Banner & View Toggle -->
+        <div class="headline-bar" id="headlineBar">
+          <div class="headline-left">
+            <span class="pill-tag">핵심 요약</span>
+            <p id="headlineText">브리핑을 불러오는 중입니다...</p>
+          </div>
+          <div class="headline-actions">
+            <span class="meta-time" id="generatedAtLabel"></span>
+            <button id="toggleMdBtn" class="btn-ghost">Markdown 보기</button>
+            <button id="copyMdBtn" class="btn-ghost">복사</button>
+          </div>
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyBriefingState" class="empty-card hidden">
+          <div class="empty-icon">🗂️</div>
+          <h3>선택한 날짜의 브리핑이 아직 없습니다</h3>
+          <p>상단의 <strong>출근 준비 시작</strong> 버튼을 누르면 해당 날짜 기준으로 새 브리핑을 즉시 생성합니다.</p>
+          <button id="emptyRunBtn" class="btn-primary">이 날짜로 브리핑 생성</button>
+        </div>
+
+        <!-- Structured Briefing View -->
+        <div id="structuredView" class="briefing-layout">
+          <div class="col-main">
+            <div class="section-divider">
+              <span class="badge-fact">확인된 사실 · Facts</span>
+              <span class="divider-caption">Google Workspace에서 직접 확인한 정보만 표시합니다</span>
+            </div>
+
+            <article class="card" id="sec-calendar">
+              <div class="card-header">
+                <div>
+                  <h2>📅 오늘의 일정 &amp; 회의</h2>
+                  <p class="card-sub" id="calendarNote"></p>
+                </div>
+              </div>
+              <div id="calendarList" class="item-list"></div>
+            </article>
+
+            <article class="card" id="sec-mails">
+              <div class="card-header">
+                <div>
+                  <h2>✉️ 최근 중요 메일</h2>
+                  <p class="card-sub">어제 이후 수신된 요청·마감·주요 알림을 중요도순으로 정리했습니다</p>
+                </div>
+              </div>
+              <div id="mailList" class="item-list"></div>
+            </article>
+
+            <article class="card" id="sec-drive">
+              <div class="card-header">
+                <div>
+                  <h2>📁 회의·최근 자료 (원문 링크)</h2>
+                  <p class="card-sub">클릭하면 Google Drive 원본으로 바로 이동합니다</p>
+                </div>
+              </div>
+              <div id="driveList" class="drive-grid"></div>
+            </article>
+
+            <article class="card" id="sec-voice">
+              <div class="card-header">
+                <div>
+                  <h2>🎙️ 음성 메모 분석 (비서실 팀장 AI)</h2>
+                  <p class="card-sub">DriveSyncFiles 음성 메모를 분석해 비서 지시·쇼츠 제작 반영 여부를 판단합니다</p>
+                </div>
+              </div>
+              <div id="voiceList" class="item-list"></div>
+            </article>
+
+            <article class="card" id="sec-news">
+              <div class="card-header">
+                <div>
+                  <h2>📰 오늘의 맞춤 뉴스 (통합 데이터 수집 봇)</h2>
+                  <p class="card-sub">관심 키워드 최신 기사를 수집합니다 · 마음에 드는 기사는 제작팀 기술 참고로 바로 넘길 수 있어요</p>
+                </div>
+              </div>
+              <div id="newsList" class="item-list"></div>
+            </article>
+          </div>
+
+          <aside class="col-side">
+            <div class="section-divider">
+              <span class="badge-suggest">우선순위 제안 · Suggestions</span>
+            </div>
+
+            <article class="card sticky-card" id="sec-priorities">
+              <div class="card-header">
+                <div>
+                  <h2>🎯 오늘 해야 할 일</h2>
+                  <p class="card-sub">완료한 항목을 클릭해 체크하세요</p>
+                </div>
+                <span class="progress-badge" id="todoProgressBadge">0 / 0</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" id="todoProgressFill" style="width: 0%"></div>
+              </div>
+              <div id="priorityList" class="priority-list"></div>
+            </article>
+          </aside>
+        </div>
+
+        <!-- Raw Markdown View -->
+        <div id="markdownView" class="card hidden">
+          <div class="card-header">
+            <div>
+              <h2>📄 브리핑 마크다운 원문 (<span id="mdFilename"></span>)</h2>
+              <p class="card-sub">다른 에이전트나 문서로 바로 전달(핸드오프)할 수 있는 파일 원본입니다</p>
+            </div>
+          </div>
+          <pre id="markdownPre" class="md-pre"></pre>
+        </div>
+      </section>
+
+      <!-- TAB 2: ORG CHART & COMPANY AGENTS.MD -->
+      <section id="tab-org" class="tab-panel">
+        <div class="card" style="margin-bottom: 20px;">
+          <div class="card-header">
+            <div>
+              <h2>🏢 호기심빛나 AI 회사 조직도 (총괄 실장 직할 · 9인 정예 체제)</h2>
+              <p class="card-sub">불필요한 중복 단계를 통합해 속도는 2배, 크레딧은 절반 이하로 줄인 최신 조직도입니다</p>
+            </div>
+            <a href="/assets/org_chart_latest.jpg" target="_blank" rel="noopener" class="btn-ghost">원본 고화질 열기 ↗</a>
+          </div>
+          <div class="org-chart-frame">
+            <img src="/assets/org_chart_latest.jpg" alt="호기심빛나 AI 회사 최신 조직도" class="org-chart-img" />
+          </div>
+        </div>
+
+        <div class="settings-grid">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2>📜 전사 규칙서 (c:\shorts-v2\AGENTS.md)</h2>
+                <p class="card-sub">총괄 실장 및 4개 부서 전 직원이 따르는 최상위 사규입니다</p>
+              </div>
+              <button id="saveRootRulesBtn" class="btn-primary">전사 사규 저장</button>
+            </div>
+            <textarea id="rootAgentsEditor" class="code-editor" spellcheck="false"></textarea>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2>📘 비서실 세부 규칙 (morning-agent/AGENTS.md)</h2>
+                <p class="card-sub">1부서 출근 브리핑 및 음성 메모 분석 지침서입니다</p>
+              </div>
+              <button id="saveRulesBtn" class="btn-primary">비서실 규칙 저장</button>
+            </div>
+            <textarea id="agentsEditor" class="code-editor" spellcheck="false"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: ARCHIVE -->
+      <section id="tab-archive" class="tab-panel">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2>🗂️ 날짜별 브리핑 보관함</h2>
+              <p class="card-sub">저장된 과거 브리핑을 선택하면 바로 확인할 수 있습니다</p>
+            </div>
+            <input type="search" id="archiveSearch" class="search-input" placeholder="날짜 또는 키워드 검색..." />
+          </div>
+          <div id="archiveList" class="archive-list"></div>
+        </div>
+      </section>
+
+      <!-- TAB 4: SETTINGS & HISTORY -->
+      <section id="tab-settings" class="tab-panel">
+        <div class="settings-grid">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2>⚙️ 에이전트 설정</h2>
+                <p class="card-sub">조회 기준 계정과 필터 옵션을 관리합니다</p>
+              </div>
+              <button id="saveConfigBtn" class="btn-primary">설정 저장</button>
+            </div>
+
+            <div class="form-stack">
+              <div class="form-row">
+                <label for="cfgAccount">기본 Google 계정</label>
+                <input type="email" id="cfgAccount" />
+              </div>
+
+              <div class="form-two">
+                <div class="form-row">
+                  <label for="cfgMailDays">메일 조회 기간 (일)</label>
+                  <input type="number" id="cfgMailDays" min="1" max="14" />
+                </div>
+                <div class="form-row">
+                  <label for="cfgCalDays">일정 미리보기 (일)</label>
+                  <input type="number" id="cfgCalDays" min="1" max="30" />
+                </div>
+              </div>
+
+              <div class="form-row">
+                <label for="cfgTrigger">기본 실행 문구</label>
+                <input type="text" id="cfgTrigger" />
+              </div>
+
+              <div class="toggle-list">
+                <label class="toggle-item">
+                  <div>
+                    <div class="toggle-title">Google 보안 알림 숨기기</div>
+                    <div class="toggle-desc">로그인·플러그인 연결 등 단순 보안 알림 메일을 제외합니다</div>
+                  </div>
+                  <input type="checkbox" id="cfgHideSecurity" />
+                </label>
+
+                <label class="toggle-item">
+                  <div>
+                    <div class="toggle-title">통화 녹음(.m4a) 파일 제외</div>
+                    <div class="toggle-desc">Drive 최근 자료에서 자동 백업 통화 녹음 파일을 숨깁니다</div>
+                  </div>
+                  <input type="checkbox" id="cfgHideCalls" />
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2>🕒 실행 이력</h2>
+                <p class="card-sub">에이전트가 브리핑을 생성한 최근 기록입니다</p>
+              </div>
+            </div>
+            <div id="historyList" class="history-list"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Media Preview Modal (Shorts / Longform / Images) -->
+  <div id="mediaModal" class="media-modal hidden" role="dialog" aria-modal="true">
+    <div class="media-modal-backdrop" id="mediaModalBackdrop"></div>
+    <div class="media-modal-box">
+      <div class="media-modal-head">
+        <h3 id="mediaModalTitle">미디어 미리보기</h3>
+        <button id="mediaModalClose" class="btn-ghost">✕ 닫기</button>
+      </div>
+      <div id="mediaModalBody" class="media-modal-body"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+  <script src="/app.js?v=5"></script>
+</body>
+
+</html>

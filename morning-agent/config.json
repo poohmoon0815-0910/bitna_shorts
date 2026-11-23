@@ -1,0 +1,19 @@
+{
+  "account": "poohmoon0815@gmail.com",
+  "timezone": "Asia/Seoul",
+  "mailLookbackDays": 3,
+  "calendarLookaheadDays": 7,
+  "includeFamilyCalendar": true,
+  "hideSecurityAlerts": true,
+  "hideCallRecordings": true,
+  "autoOrganizeInbox": true,
+  "scheduledTime": "09:00",
+  "autoScheduleEnabled": false,
+  "briefingTriggerPhrase": "오늘 출근 준비해 줘",
+  "newsKeywords": [
+    "AI 비디오 생성 모델",
+    "AI 이미지 생성 무료",
+    "AI 음성 TTS"
+  ],
+  "newsMaxPerKeyword": 3
+}

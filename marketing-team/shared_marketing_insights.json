@@ -1,0 +1,41 @@
+{
+  "updatedAt": "2026-11-22T22:45:00+09:00",
+  "source": "부서 3. 마케팅·블로그실 (유튜브 분석·글로벌 SEO 전문가)",
+  "topInsights": [
+    {
+      "id": "insight-contrast",
+      "target": ["shorts", "longform"],
+      "title": "공허한 수식 놀음 금지 — 오감 체감형 극적 대비 원칙",
+      "rule": "수천만 년 뺄셈 같은 추상 숫자 대신, '19세 학생이 20대 누나인 줄 알았는데 알고 보니 엄마보다 나이 많은 40대였다'처럼 일상 기준점과 기대-실제 불일치로 즉각 감정이 반응하는 대비를 배치한다."
+    },
+    {
+      "id": "insight-hook-60",
+      "target": ["shorts", "longform"],
+      "title": "첫 3초 / 첫 60초 미제 현장 훅 공식 (Hook Score 92점)",
+      "rule": "쇼츠는 첫 3초 내 상식 파괴·부정 명령·직관적 질문으로 시작하고 제목은 공백 포함 15~20자 이내(말줄임표 방지). 롱폼은 장황한 서론 없이 가장 충격적인 현장 발견과 의문(가짜 좌표, 식탁 위 음식 등)을 첫 60초에 배치한다."
+    },
+    {
+      "id": "insight-schedule-seo",
+      "target": ["shorts", "longform"],
+      "title": "피크타임 예약·글로벌 영어 SEO·공개 직후 고정 댓글 & 블로그 OSMU",
+      "rule": "쇼츠는 12:00 / 18:00 분산 예약(최소 90분 전 업로드), 전 영상 영어 다국어(localizations.en) 세팅 및 공개 직후 밸런스 질문 댓글 자동화. 영상 완성 직후 3부서 블로그 에이전트가 Flash 모델로 티스토리(빛나 아카이브) 1,800자 OSMU 원고를 자동 생성한다."
+    }
+  ],
+  "activeKeywords": {
+    "shorts": ["인체 비밀", "우주 미스터리", "체감형 과학 대비", "15~20자 쇼츠 제목", "글로벌 자동 더빙"],
+    "longform": ["해외 역사 미제 실화", "아카이브 실사 + 시네마틱", "라이다(LiDAR) 반전", "노란딱지 0% 고증", "티스토리 애드센스 OSMU"]
+  },
+  "channels": {
+    "ch1": {
+      "name": "호기심빛나",
+      "playlists": ["인체 비밀", "우주 미스터리", "생명·일상과학"],
+      "publishSchedule": ["12:00 KST", "18:00 KST"]
+    },
+    "ch2": {
+      "name": "Night Moon [미스터리 실화]",
+      "channelId": "UC1DsNqZ4xaaXihoBiZBXJFA",
+      "handle": "@NightMoon_Docu",
+      "blog": "https://bitna-archive.tistory.com/"
+    }
+  }
+}

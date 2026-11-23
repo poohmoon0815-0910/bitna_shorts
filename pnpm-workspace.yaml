@@ -1,0 +1,9 @@
+packages:
+  - "apps/web"
+  - "apps/remotion"
+
+allowBuilds:
+  esbuild: true
+
+onlyBuiltDependencies:
+  - esbuild
